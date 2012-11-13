@@ -35,13 +35,13 @@ end
 
 
 begin
-  g = Git.open(Dir.pwd)
+  git = Git.open(Dir.pwd)
 rescue
   puts "Fatal error git directory not found"
   exit
 end
 
-config = g.config
+config = git.config
 
 if config['jenkins.url'].nil?
   config_not_found("jenkins.url")
