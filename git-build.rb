@@ -20,7 +20,7 @@ def config_not_found(config_name)
 end
 
 
-if ARGV[0].nil? == false and ARGV[0].downcase == '-h' then
+if !ARGV[0].nil? and ARGV[0].downcase == '-h'
   puts "Usage : git build [project_name]"
   puts "\n"
   puts "Config:"
@@ -43,19 +43,19 @@ end
 
 config = g.config
 
-if config['jenkins.url'].nil? then
+if config['jenkins.url'].nil?
   config_not_found("jenkins.url")
 end
 
-if config['jenkins.token'].nil? then
+if config['jenkins.token'].nil?
   config_not_found("jenkins.url")
 end
 
-if config['jenkins.job'].nil? and ARGV[0].nil? then
+if config['jenkins.job'].nil? && ARGV[0].nil?
   config_not_found("jenkins.url")
 end
 
-if config['jenkins.job'].nil? then
+if config['jenkins.job'].nil?
   project_name = ARGV[0]
 else
   project_name = config['jenkins.job']
@@ -75,20 +75,20 @@ json        = JSON.parse(response.body)
 project_url = nil
 
 json['jobs'].each do |job|
-  if job['name'].downcase == project_name.downcase then
+  if job['name'].downcase == project_name.downcase
     project_url = job['url']
   end
 end
 
-if project_url.nil? then
+if project_url.nil?
   puts "Error: Can't find job named \"" + project_name + "\""
   exit
 end
 
 
-buildUri = URI.parse(project_url + 'build/?token=' + config['jenkins.token'])
-http     = Net::HTTP.new(buildUri.host, buildUri.port)
-request  = Net::HTTP::Get.new(buildUri.request_uri)
+build_uri = URI.parse(project_url + 'build/?token=' + config['jenkins.token'])
+http      = Net::HTTP.new(build_uri.host, build_uri.port)
+request   = Net::HTTP::Get.new(build_uri.request_uri)
 
 if config['jenkins.username'].nil? then
   request.basic_auth(config['jenkins.username'], config['jenkins.password'])
