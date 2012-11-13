@@ -20,7 +20,7 @@ def config_not_found(config_name)
 end
 
 
-if ARGV[0].nil? == false and ARGV[0].downcase == '-h'  then
+if ARGV[0].nil? == false and ARGV[0].downcase == '-h' then
   puts "Usage : git build [project_name]"
   puts "\n"
   puts "Config:"
@@ -41,7 +41,7 @@ rescue
   exit
 end
 
-config =  g.config
+config = g.config
 
 if config['jenkins.url'].nil? then
   config_not_found("jenkins.url")
@@ -56,9 +56,9 @@ if config['jenkins.job'].nil? and ARGV[0].nil? then
 end
 
 if config['jenkins.job'].nil? then
-  project_name  = ARGV[0]
+  project_name = ARGV[0]
 else
-  project_name  = config['jenkins.job']
+  project_name = config['jenkins.job']
 end
 
 
