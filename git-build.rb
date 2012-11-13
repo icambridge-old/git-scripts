@@ -62,18 +62,16 @@ else
 end
 
 
-uri = URI.parse(config['jenkins.url']+"api/json")
-
-
-http = Net::HTTP.new(uri.host, uri.port)
+uri     = URI.parse(config['jenkins.url']+"api/json")
+http    = Net::HTTP.new(uri.host, uri.port)
 request = Net::HTTP::Get.new(uri.request_uri)
 
 if config['jenkins.username'].nil? then
   request.basic_auth(config['jenkins.username'], config['jenkins.password'])
 end
 
-response = http.request(request)
-json = JSON.parse(response.body)
+response    = http.request(request)
+json        = JSON.parse(response.body)
 project_url = nil
 
 json['jobs'].each do |job|
@@ -83,18 +81,18 @@ json['jobs'].each do |job|
 end
 
 if project_url.nil? then
-  puts "Invalid project"
+  puts "Error: Can't find job named \"" + project_name + "\""
   exit
 end
 
 
 buildUri = URI.parse(project_url + 'build/?token=' + config['jenkins.token'])
-http = Net::HTTP.new(buildUri.host, buildUri.port)
-request = Net::HTTP::Get.new(buildUri.request_uri)
+http     = Net::HTTP.new(buildUri.host, buildUri.port)
+request  = Net::HTTP::Get.new(buildUri.request_uri)
 
 if config['jenkins.username'].nil? then
   request.basic_auth(config['jenkins.username'], config['jenkins.password'])
 end
 
 response = http.request(request)
-puts "Building " + project_name
+puts "Success " + project_name + " is now building"
