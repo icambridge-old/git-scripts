@@ -66,7 +66,7 @@ uri     = URI.parse(config['jenkins.url']+"api/json")
 http    = Net::HTTP.new(uri.host, uri.port)
 request = Net::HTTP::Get.new(uri.request_uri)
 
-if config['jenkins.username'].nil? then
+if !config['jenkins.username'].nil? then
   request.basic_auth(config['jenkins.username'], config['jenkins.password'])
 end
 
@@ -90,7 +90,7 @@ build_uri = URI.parse(project_url + 'build/?token=' + config['jenkins.token'])
 http      = Net::HTTP.new(build_uri.host, build_uri.port)
 request   = Net::HTTP::Get.new(build_uri.request_uri)
 
-if config['jenkins.username'].nil? then
+if !config['jenkins.username'].nil? then
   request.basic_auth(config['jenkins.username'], config['jenkins.password'])
 end
 
